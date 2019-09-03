@@ -1,0 +1,77 @@
+# English
+en:
+  THUMBRATINGS_PLUGIN:
+
+    ERROR_ID: 'ERROR: no id provided to <code>thumbs()</code> twig function'
+    ERROR_TYPE: 'ERROR: no type provided to <code>thumbs()</code> twig function'
+
+    USE_BUILT_IN_CSS: Use Built in CSS
+    
+    CALLBACK_URL: Callback URL
+    CALLBACK_URL_HELP: A path that the plugin will look for when processing Ajax calls
+
+    UP_BGCOLOR: Up Background Color
+    DOWN_BGCOLOR: Down Background Color
+    UP_COLOR: Up Color
+    DOWN_COLOR: Down Color
+
+    UNIQUE_IP_CHECK: Unique IP Check
+    UNIQUE_IP_CHECK_HELP: Ensures that a particular IP can only vote once
+    
+    READ_ONLY: Read Only
+    READ_ONLY_HELP: Set to readonly to disable all interaction
+
+    DISABLE_AFTER_VOTE: Disable After Vote
+    DISABLE_AFTER_VOTE_HELP: Disable the interaction after the user has already made the vote
+
+# français
+fr:
+  THUMBRATINGS_PLUGIN:
+
+    ERROR_ID: "ERREUR: aucune id assignée à la fonction Twig <code>thumbs()</code>"
+    ERROR_TYPE: "ERREUR: aucun type assigné à la fonction Twig <code>thumbs()</code>"
+
+    USE_BUILT_IN_CSS: "Utiliser les CSS natifs"
+    
+    CALLBACK_URL: "URL de secours"
+    CALLBACK_URL_HELP: "Un chemin que recherchera le plugin pour traîter les appels Ajax"
+
+    UP_BGCOLOR: "Couleur du fond haut"
+    DOWN_BGCOLOR: "Couleur du fond bas"
+    UP_COLOR: "Couleur du haut"
+    DOWN_COLOR: "Couleur du bas"
+
+    UNIQUE_IP_CHECK: "Vérification d'IP unique"
+    UNIQUE_IP_CHECK_HELP: "Permet de s'assurer qu'une IP spécifique ne peux voter qu'une seule fois"
+    
+    READ_ONLY: "Lecture seule"
+    READ_ONLY_HELP: "Paramétrer sur lecture seule pour interdire toute intéraction"
+
+    DISABLE_AFTER_VOTE: "Désactiver après le vote"
+    DISABLE_AFTER_VOTE_HELP: "Désactiver l'intéraction après que l'utilisateur ait voté"
+
+# Italiano
+it:
+  THUMBRATINGS_PLUGIN:
+
+    ERROR_ID: 'ERRORE: nessun id fornito per la funzione <code>thumbs()</code>'
+    ERROR_TYPE: 'ERRORE: nessun tipo fornito per la funzione <code>thumbs()</code>'
+
+    USE_BUILT_IN_CSS: Usa CSS interno
+    
+    CALLBACK_URL: Callback URL
+    CALLBACK_URL_HELP: Un percorso che il plugin cercherà durante l'elaborazione di Ajax
+
+    UP_BGCOLOR: Colore di sfondo Sù
+    DOWN_BGCOLOR: Colore di sfondo Giù
+    UP_COLOR: Colore Sù
+    DOWN_COLOR: Colore Giù
+    
+    UNIQUE_IP_CHECK: Verifica IP unico
+    UNIQUE_IP_CHECK_HELP: Assicura che un particolare IP può votare una sola volta
+    
+    READ_ONLY: Solo lettura
+    READ_ONLY_HELP: Impostare in sola lettura per disabilitare tutte le interazioni
+
+    DISABLE_AFTER_VOTE: Disabilita dopo la votazione
+    DISABLE_AFTER_VOTE_HELP: Disabilitare l'interazione dopo che l'utente ha già effettuato la votazione

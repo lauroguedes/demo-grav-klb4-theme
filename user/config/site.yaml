@@ -1,0 +1,16 @@
+title: 'Klb4 Theme'
+author:
+  name: 'Léo WG'
+  email: leowgweb@gmail.com
+taxonomies:
+  - tag
+  - author
+metadata:
+  description: 'Klb4 Theme for knowledgebase, building with Grav. Grav is an easy to use, yet powerful, open source flat-file CMS'
+summary:
+  enabled: true
+  format: short
+  size: 300
+  delimiter: '==='
+blog:
+  route: /blog

@@ -1,0 +1,62 @@
+registered:
+  icon: users
+  readableName: 'Registered Users'
+  description: 'The group of registered users'
+  access:
+    site:
+      login: true
+moderator:
+  readableName: 'Moderator Members'
+  description: 'The group of moderators members'
+  icon: money
+  access:
+    admin:
+      login: true
+    site:
+      login: true
+      moderador: true
+      colaborador: true
+      parceiro: true
+      cliente: true
+team:
+  readableName: 'Team Members'
+  description: 'The group of team members'
+  icon: money
+  access:
+    site:
+      login: true
+      colaborador: true
+      parceiro: true
+      cliente: true
+partner:
+  readableName: 'Partner Members'
+  description: 'The group of partner members'
+  icon: money
+  access:
+    site:
+      login: true
+      parceiro: true
+      cliente: true
+client:
+  readableName: 'Client Members'
+  description: 'The group of client members'
+  icon: money
+  access:
+    site:
+      login: true
+      cliente: true
+admin:
+  groupname: administrators
+  readableName: Administrators
+  description: 'The group of administrators'
+  icon: child
+  access:
+    admin:
+      login: true
+      super: true
+    site:
+      login: true
+      moderador: true
+      colaborador: true
+      parceiro: true
+      cliente: true

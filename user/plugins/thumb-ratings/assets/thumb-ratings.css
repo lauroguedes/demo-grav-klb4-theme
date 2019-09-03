@@ -1,0 +1,22 @@
+.thumb {
+    display: inline-block;
+    cursor: pointer;
+    margin: 0px 0px 0px 5px;
+    padding: 1px 5px 2px 5px;
+    border-radius: 5px;color:white;
+}
+
+.thumb-rating-container {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+.thumb:hover .fa-thumbs-o-up:before{
+  content:"\f164";
+  color:black;
+  
+}
+.thumb:hover .fa-thumbs-o-down:before{
+  content:"\f165";
+  color:black;
+}

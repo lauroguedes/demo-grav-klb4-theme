@@ -1,0 +1,11 @@
+state: enabled
+email: leowgweb@gmail.com
+fullname: 'Klb4 Theme'
+title: Admin
+access:
+  admin:
+    login: true
+    super: true
+  site:
+    login: true
+hashed_password: $2y$10$zTO04xE4hO8qXSnVB7S3h.yUOQ9IrLxF6KgGTaUUr3nB0uLo609Sq
