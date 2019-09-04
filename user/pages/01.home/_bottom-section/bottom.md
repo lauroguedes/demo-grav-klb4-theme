@@ -5,15 +5,15 @@ social:
     -
         icon: 'fa fa-facebook-official'
         text: Facebook
-        url: 'https://facebook.com'
+        url: 'https://facebook.com/leowgweb'
     -
         icon: 'fa fa-twitter'
         text: Twitter
-        url: 'https://twitter.com'
+        url: 'https://twitter.com/leowg'
     -
         icon: 'fa fa-instagram'
         text: Instagram
-        url: 'https://instagram.com'
+        url: 'https://instagram.com/leowgweb'
 anchors:
     active: true
 tagtitle: h2
