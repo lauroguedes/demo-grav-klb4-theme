@@ -37,10 +37,10 @@ form:
             classes: fancy
             options:
                 registered: 'Only Login'
-                moderator: Moderator
-                team: Team
-                partner: Partner
-                client: Customer
+                #moderator: Moderator
+                #team: Team
+                #partner: Partner
+                #client: Customer
             validate:
                 required: true
     buttons:
