@@ -1,0 +1,35 @@
+enabled: true
+production-mode: true
+grid-size: grid-xl
+header-fixed: true
+header-animated: true
+header-dark: false
+header-transparent: false
+sticky-footer: true
+blog-page: /blog
+spectre:
+  exp: false
+  icons: false
+header-showexternallinks: true
+header-externallinks:
+  -
+    icon: 'fa fa-text-height'
+    text: Typography
+    url: /typography
+    target: false
+  -
+    icon: 'fa fa-user-plus'
+    text: Registration
+    url: /registration
+    target: false
+  -
+    icon: 'fa fa-github'
+    text: GitHub
+    url: 'https://github.com/lauroguedes/grav-theme-klb4'
+    target: true
+  -
+    icon: 'fa fa-bug'
+    text: Issues
+    url: 'https://github.com/lauroguedes/grav-theme-klb4/issues'
+    target: true
+analytics_id: UA-148950210-1
