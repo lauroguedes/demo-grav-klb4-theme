@@ -66,6 +66,9 @@ class ImgCaptionsPlugin extends Plugin
         if ($this->isAdmin() || $this->config->get('plugins.imgcaptions.enabled') !== true) {
             return;
         }
+        if ($this->config->get('system.pages.type') == "flex") {
+            return;
+        }
         
         $config = (array) $this->config->get('plugins.imgcaptions');
         $this->mode = $config['mode'];
@@ -95,9 +98,9 @@ class ImgCaptionsPlugin extends Plugin
      */
     public function output(Event $event)
     {
-        $page = $event['page'];
+        $Page = $event['page'];
         $config = (array) $this->config->get('plugins.imgcaptions');
-        $header = (array) $page->header();
+        $header = (array) $Page->header();
         if (isset($header['imgcaptions'])) {
             $config = Utils::arrayMergeRecursiveUnique(
                 $config,
@@ -108,8 +111,8 @@ class ImgCaptionsPlugin extends Plugin
             return;
         }
         include __DIR__ . '/vendor/autoload.php';
-        $Source = new Source($page, $this->grav['pages']);
-        $content = $page->getRawContent();
+        $Source = new Source($Page, $this->grav['pages']);
+        $content = $Page->getRawContent();
         if ($this->mode == 'markdown') {
             $Markdown = new Markdown($this->grav['twig'], $Source);
             $content = $Markdown->render($content);
@@ -117,7 +120,7 @@ class ImgCaptionsPlugin extends Plugin
             $HTML = new HTML($this->grav['twig'], $Source);
             $content = $HTML->render($content);
         }
-        $page->setRawContent($content);
+        $Page->setRawContent($content);
     }
 
     /**

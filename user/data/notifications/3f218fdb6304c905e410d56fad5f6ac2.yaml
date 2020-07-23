@@ -1,12 +1,20 @@
-last_checked: 1569780737
+last_checked: 1595499980
 data:
   feed:
     -
-      id: 24
-      date: '2019-09-17 11:27'
-      message: '⏰ It''s that time again! Please vote for Grav as <b>Best Flat File CMS</b> in the 2019 CMS Critics'' Awards'
-      link: 'https://www.cmscritic.com/awards/'
+      id: 25
+      date: '2020-02-18 11:27'
+      message: '🕵️‍♂️ Would you attend an Official Grav Conference?  We need your help!'
+      link: 'https://forms.gle/22NQJuARmT1SFmXS6'
       type: note
+      location:
+        - feed
+    -
+      id: 24
+      date: '2019-10-03 11:27'
+      message: '🙏 Thanks to our amazing community, Grav was voted <b>Best Flat File CMS</b> in the 2019 CMS Critics'' Awards!'
+      link: 'https://www.cmscritic.com/awards/'
+      type: info
       location:
         - feed
     -

@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'TRegx\\' => array($vendorDir . '/rawr/t-regx/src/TRegx'),
     'RegexBuilder\\' => array($baseDir . '/classes/RegexBuilder'),
     'Grav\\Plugin\\ImgCaptionsPlugin\\API\\' => array($baseDir . '/classes'),
 );

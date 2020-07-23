@@ -1,0 +1,11 @@
+state: enabled
+email: klb4@klb4-theme.com
+access:
+  admin:
+    login: true
+    super: true
+  site:
+    login: true
+fullname: 'Klb4 Theme'
+title: 'Klb4 Theme'
+hashed_password: $2y$10$N182JSOeh1NO0WPDt9xGxOY7O7FOLu1JDvTEpMWL/tvFYiaUQxAKO

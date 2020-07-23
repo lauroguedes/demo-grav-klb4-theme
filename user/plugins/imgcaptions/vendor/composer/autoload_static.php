@@ -4,9 +4,17 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInite678b47c7555cb0861d015705620df54
+class ComposerStaticInit276fa107d1f6a5f90742457936970449
 {
+    public static $files = array (
+        '8b3f8a3ae8e6735c5c18ca84e978b632' => __DIR__ . '/..' . '/rawr/t-regx/helper/helper.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
+        'T' => 
+        array (
+            'TRegx\\' => 6,
+        ),
         'R' => 
         array (
             'RegexBuilder\\' => 13,
@@ -18,6 +26,10 @@ class ComposerStaticInite678b47c7555cb0861d015705620df54
     );
 
     public static $prefixDirsPsr4 = array (
+        'TRegx\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/rawr/t-regx/src/TRegx',
+        ),
         'RegexBuilder\\' => 
         array (
             0 => __DIR__ . '/../..' . '/classes/RegexBuilder',
@@ -31,8 +43,8 @@ class ComposerStaticInite678b47c7555cb0861d015705620df54
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInite678b47c7555cb0861d015705620df54::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInite678b47c7555cb0861d015705620df54::$prefixDirsPsr4;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit276fa107d1f6a5f90742457936970449::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit276fa107d1f6a5f90742457936970449::$prefixDirsPsr4;
 
         }, null, ClassLoader::class);
     }

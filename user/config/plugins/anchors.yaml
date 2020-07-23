@@ -1,0 +1,12 @@
+enabled: true
+active: false
+sticky: true
+smooth_scrolling: true
+offset_top: 50
+selectors: 'h1,h2,h3,h4'
+placement: right
+visible: hover
+icon: null
+class: null
+class_ul: null
+truncate: 64

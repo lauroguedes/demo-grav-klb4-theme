@@ -12,7 +12,6 @@
  */
 namespace Grav\Plugin\ImgCaptionsPlugin;
 
-use TRegx\CleanRegex\Pattern;
 use Grav\Plugin\ImgCaptionsPlugin\API\Regex;
 
 /**
@@ -53,7 +52,7 @@ class ImgCaptionsTest extends \Codeception\Test\Unit
      *
      * @deprecated 3.0.0
      */
-    const REGEX_MARKDOWN_LINK = '/!\[(?\'alt\'.*)\]\s?\((?\'file\'.*)(?\'ext\'.png|.gif|.jpg|.jpeg)(?\'grav\'\??(?\'type\'\?id|classes|.*)\=*.*[^"])?\s*(?:\"(?\'title\'.*)\")*\)(?\'extra\'\{.*\})?(?\'url\'___https?:\/\/.*)?/';
+    const REGEX_MARKDOWN_LINK = '/!\[(?\'alt\'.*)\]\s?\((?\'file\'.*)(?\'ext\'.png|.gif|.jpg|.jpeg)(?\'mediaActions\'\??(?\'type\'\?id|classes|.*)\=*.*[^"])?\s*(?:\"(?\'title\'.*)\")*\)(?\'extra\'\{.*\})?(?\'url\'___https?:\/\/.*)?/';
 
     /**
      * PCRE-pattern for parsing HTML img-tags
@@ -162,7 +161,7 @@ class ImgCaptionsTest extends \Codeception\Test\Unit
     {
         $Regex = new Regex();
         foreach ($Regex::all() as $pattern) {
-            $this->assertTrue(pattern($pattern)->is()->valid());
+            $this->assertTrue(pattern($pattern)->valid());
         }
     }
 

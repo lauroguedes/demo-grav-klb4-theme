@@ -12,6 +12,7 @@ namespace Grav\Plugin\Login;
 use Birke\Rememberme\Cookie;
 use Grav\Common\Config\Config;
 use Grav\Common\Data\Data;
+use Grav\Common\Debugger;
 use Grav\Common\Grav;
 use Grav\Common\Language\Language;
 use Grav\Common\Page\Interfaces\PageInterface;
@@ -32,6 +33,8 @@ use Grav\Plugin\Login\TwoFactorAuth\TwoFactorAuth;
  */
 class Login
 {
+    public const DEBUG = 0;
+
     /** @var Grav */
     protected $grav;
 
@@ -74,6 +77,17 @@ class Login
     }
 
     /**
+     * @param string $message
+     * @param array $data
+     */
+    public static function addDebugMessage(string $message, $data = [])
+    {
+        /** @var Debugger $debugger */
+        $debugger = Grav::instance()['debugger'];
+        $debugger->addMessage($message, 'debug', $data);
+    }
+
+    /**
      * Login user.
      *
      * @param array $credentials    Login credentials, eg: ['username' => '', 'password' => '']
@@ -95,6 +109,7 @@ class Login
         $grav->fireEvent('onUserLoginAuthenticate', $event);
 
         if ($event->isSuccess()) {
+            static::DEBUG && static::addDebugMessage('Login onUserLoginAuthenticate: success', $event);
 
             // Make sure that event didn't mess up with the user authorization.
             $user = $event->getUser();
@@ -107,6 +122,8 @@ class Login
         }
 
         if ($event->isSuccess()) {
+            static::DEBUG && static::addDebugMessage('Login onUserLoginAuthorize: success', $event);
+
             // User has been logged in, let plugins know.
             $event = new UserLoginEvent($event->toArray());
             $grav->fireEvent('onUserLogin', $event);
@@ -115,11 +132,17 @@ class Login
             $user = $event->getUser();
             $user->authenticated = true;
             $user->authorized = !$event->isDelayed();
-
+            if ($user->authorized) {
+                $event = new UserLoginEvent($event->toArray());
+                $this->grav->fireEvent('onUserLoginAuthorized', $event);
+            }
         } else {
+            static::DEBUG && static::addDebugMessage('Login failed', $event);
+
             // Allow plugins to log errors or do other tasks on failure.
+            $eventName = $event->getOption('failureEvent') ?? 'onUserLoginFailure';
             $event = new UserLoginEvent($event->toArray());
-            $grav->fireEvent('onUserLoginFailure', $event);
+            $grav->fireEvent($eventName, $event);
 
             // Make sure that event didn't mess up with the user authorization.
             $user = $event->getUser();
@@ -257,6 +280,53 @@ class Login
     }
 
     /**
+     * @param string $username
+     * @param string|null $ip
+     * @return int Return positive number if rate limited, otherwise return 0.
+     */
+    public function checkLoginRateLimit(string $username, string $ip = null): int
+    {
+        $ipKey = $this->getIpKey($ip);
+        $rateLimiter = $this->getRateLimiter('login_attempts');
+        $rateLimiter->registerRateLimitedAction($ipKey, 'ip')->registerRateLimitedAction($username);
+
+        // Check rate limit for both IP and user, but allow each IP a single try even if user is already rate limited.
+        $attempts = \count($rateLimiter->getAttempts($ipKey, 'ip'));
+        if ($rateLimiter->isRateLimited($ipKey, 'ip') || ($attempts && $rateLimiter->isRateLimited($username))) {
+            return $rateLimiter->getInterval();
+        }
+
+        return 0;
+    }
+
+    /**
+     * @param string $username
+     * @param string|null $ip
+     */
+    public function resetLoginRateLimit(string $username, string $ip = null): void
+    {
+        $ipKey = $this->getIpKey($ip);
+        $rateLimiter = $this->getRateLimiter('login_attempts');
+        $rateLimiter->resetRateLimit($ipKey, 'ip')->resetRateLimit($username);
+    }
+
+    /**
+     * @param string|null $ip
+     * @return string
+     */
+    public function getIpKey(string $ip = null): string
+    {
+        if (null === $ip) {
+            $ip = Uri::ip();
+        }
+        $isIPv4 = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+        $ipKey = $isIPv4 ? $ip : Utils::getSubnet($ip, $this->grav['config']->get('plugins.login.ipv6_subnet_size'));
+
+        // Pseudonymization of the IP
+        return sha1($ipKey . $this->grav['config']->get('security.salt'));
+    }
+
+    /**
      * @param string $type
      * @param mixed  $value
      * @param string $extra
@@ -284,7 +354,7 @@ class Login
                 $pwd_regex = '/' . $config->get('system.pwd_regex') . '/';
 
                 if (!\is_string($value) || !preg_match($pwd_regex, $value)) {
-                    throw new \RuntimeException('Password does not pass them minimum requirements');
+                    throw new \RuntimeException('Password does not pass the minimum requirements');
                 }
 
                 break;
@@ -559,13 +629,18 @@ class Login
             return true;
         }
 
-        if (!$user->authorized) {
+        // Deny access if user has not completed 2FA challenge.
+        if ($user->authenticated && !$user->authorized) {
             return false;
         }
 
         // Continue to the page if user is authorized to access the page.
         foreach ($rules as $rule => $value) {
-            if (\is_array($value)) {
+            if (is_int($rule)) {
+                if ($user->authorize($value) === true) {
+                    return true;
+                }
+            } elseif (\is_array($value)) {
                 foreach ($value as $nested_rule => $nested_value) {
                     if ($user->authorize($rule . '.' . $nested_rule) === Utils::isPositive($nested_value)) {
                         return true;
@@ -646,5 +721,4 @@ class Login
     {
         return $this->provider_login_templates;
     }
-
 }

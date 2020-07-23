@@ -1,0 +1,13 @@
+version: "3"
+services:
+  demoklb4theme:
+    build: ./.docker
+    container_name: demo_klb4_theme
+    restart: always
+    environment:
+      XDEBUG_ENABLED: "false"
+    ports:
+      - "80:8080"
+      - "8083:8083"
+    volumes:
+      - ./:/var/www/app

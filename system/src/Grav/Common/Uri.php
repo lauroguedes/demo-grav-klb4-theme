@@ -151,7 +151,7 @@ class Uri
 
         $this->url = $this->base . $this->uri;
 
-        $uri = str_replace(static::filterPath($this->root), '', $this->url);
+        $uri = Utils::replaceFirstOccurrence(static::filterPath($this->root), '', $this->url);
 
         // remove the setup.php based base if set:
         $setup_base = $grav['pages']->base();
@@ -195,7 +195,7 @@ class Uri
         // set the new url
         $this->url = $this->root . $path;
         $this->path = static::cleanPath($path);
-        $this->content_path = trim(str_replace($this->base, '', $this->path), '/');
+        $this->content_path = trim(Utils::replaceFirstOccurrence($this->base, '', $this->path), '/');
         if ($this->content_path !== '') {
             $this->paths = explode('/', $this->content_path);
         }
@@ -306,7 +306,7 @@ class Uri
     public function param($id)
     {
         if (isset($this->params[$id])) {
-            return html_entity_decode(rawurldecode($this->params[$id]));
+            return html_entity_decode(rawurldecode($this->params[$id]), ENT_COMPAT | ENT_HTML401, 'UTF-8');
         }
 
         return false;
@@ -340,7 +340,7 @@ class Uri
             return $this->url;
         }
 
-        $url = str_replace($this->base, '', rtrim($this->url, '/'));
+        $url = Utils::replaceFirstOccurrence($this->base, '', rtrim($this->url, '/'));
 
         return $url ?: '/';
     }
@@ -489,7 +489,7 @@ class Uri
             return $this->uri;
         }
 
-        return str_replace($this->root_path, '', $this->uri);
+        return Utils::replaceFirstOccurrence($this->root_path, '', $this->uri);
     }
 
     /**
@@ -531,7 +531,7 @@ class Uri
             return $this->root;
         }
 
-        return str_replace($this->base, '', $this->root);
+        return Utils::replaceFirstOccurrence($this->base, '', $this->root);
     }
 
     /**
@@ -541,7 +541,9 @@ class Uri
      */
     public function currentPage()
     {
-        return $this->params['page'] ?? 1;
+        $page = (int)($this->params['page'] ?? 1);
+
+        return max(1, $page);
     }
 
     /**
@@ -629,9 +631,9 @@ class Uri
     {
         if (getenv('HTTP_CLIENT_IP')) {
             $ip = getenv('HTTP_CLIENT_IP');
-        } elseif (getenv('HTTP_X_FORWARDED_FOR')) {
+        } elseif (getenv('HTTP_X_FORWARDED_FOR') && Grav::instance()['config']->get('system.http_x_forwarded.ip')) {
             $ip = getenv('HTTP_X_FORWARDED_FOR');
-        } elseif (getenv('HTTP_X_FORWARDED')) {
+        } elseif (getenv('HTTP_X_FORWARDED') && Grav::instance()['config']->get('system.http_x_forwarded.ip')) {
             $ip = getenv('HTTP_X_FORWARDED');
         } elseif (getenv('HTTP_FORWARDED_FOR')) {
             $ip = getenv('HTTP_FORWARDED_FOR');
@@ -783,7 +785,7 @@ class Uri
             }
 
             // special check to see if path checking is required.
-            $just_path = str_replace($normalized_url, '', $normalized_path);
+            $just_path = Utils::replaceFirstOccurrence($normalized_url, '', $normalized_path);
             if ($normalized_url === '/' || $just_path === $page->path()) {
                 $url_path = $normalized_url;
             } else {
@@ -852,7 +854,7 @@ class Uri
             }
 
             // strip base from this path
-            $target_path = str_replace($uri->rootUrl(), '', $target_path);
+            $target_path = Utils::replaceFirstOccurrence($uri->rootUrl(), '', $target_path);
 
             // set to / if root
             if (empty($target_path)) {
@@ -877,7 +879,7 @@ class Uri
 
         // Handle route only
         if ($route_only) {
-            $url_path = str_replace(static::filterPath($base_url), '', $url_path);
+            $url_path = Utils::replaceFirstOccurrence(static::filterPath($base_url), '', $url_path);
         }
 
         // transform back to string/array as needed
@@ -998,7 +1000,7 @@ class Uri
         }
 
         // special check to see if path checking is required.
-        $just_path = str_replace($normalized_url, '', $normalized_path);
+        $just_path = Utils::replaceFirstOccurrence($normalized_url, '', $normalized_path);
         if ($just_path === $page->path()) {
             return $normalized_url;
         }
@@ -1148,7 +1150,7 @@ class Uri
     protected function createFromEnvironment(array $env)
     {
         // Build scheme.
-        if (isset($env['HTTP_X_FORWARDED_PROTO'])) {
+        if (isset($env['HTTP_X_FORWARDED_PROTO']) && Grav::instance()['config']->get('system.http_x_forwarded.protocol')) {
             $this->scheme = $env['HTTP_X_FORWARDED_PROTO'];
         } elseif (isset($env['X-FORWARDED-PROTO'])) {
             $this->scheme = $env['X-FORWARDED-PROTO'];
@@ -1166,11 +1168,14 @@ class Uri
         $this->password = $env['PHP_AUTH_PW'] ?? null;
 
         // Build host.
-        $hostname = 'localhost';
-        if (isset($env['HTTP_HOST'])) {
+        if (isset($env['HTTP_X_FORWARDED_HOST']) && Grav::instance()['config']->get('system.http_x_forwarded.host')) {
+            $hostname = $env['HTTP_X_FORWARDED_HOST'];
+        } else if (isset($env['HTTP_HOST'])) {
             $hostname = $env['HTTP_HOST'];
         } elseif (isset($env['SERVER_NAME'])) {
             $hostname = $env['SERVER_NAME'];
+        } else {
+            $hostname = 'localhost';
         }
         // Remove port from HTTP_HOST generated $hostname
         $hostname = Utils::substrToString($hostname, ':');
@@ -1178,7 +1183,7 @@ class Uri
         $this->host = $this->validateHostname($hostname) ? $hostname : 'unknown';
 
         // Build port.
-        if (isset($env['HTTP_X_FORWARDED_PORT'])) {
+        if (isset($env['HTTP_X_FORWARDED_PORT']) && Grav::instance()['config']->get('system.http_x_forwarded.port')) {
            $this->port = (int)$env['HTTP_X_FORWARDED_PORT'];
         } elseif (isset($env['X-FORWARDED-PORT'])) {
            $this->port = (int)$env['X-FORWARDED-PORT'];

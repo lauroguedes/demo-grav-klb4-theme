@@ -1,3 +1,43 @@
+# v3.1.5
+## 25-03-2020
+
+1. [](#bugfix)
+   - Check state of MediaActions
+
+# v3.1.4
+## 25-03-2020
+
+1. [](#bugfix)
+   - Reinsert Rawr/T-Regx
+
+# v3.1.3
+## 25-03-2020
+
+1. [](#bugfix)
+   - Deprecate inclusion of Rawr/T-Regx, missing file
+
+# v3.1.2
+## 25-03-2020
+
+1. [](#bugfix)
+   - Revert Media-actions for now
+2. [](#improved)
+   - Variable-naming
+
+# v3.1.1
+## 25-03-2020
+
+1. [](#bugfix)
+   - Fix autoloading
+
+# v3.1.0
+## 19-03-2020
+
+1. [](#improved)
+   - Support media actions (#24, thanks to @A----)
+   - Automate testing (#25, thanks to @A----)
+   - Bump T-Regx (#26, thanks to @Danon)
+
 # v3.0.3
 ## 13-08-2019
 

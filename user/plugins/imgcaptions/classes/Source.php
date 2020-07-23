@@ -17,6 +17,7 @@ use Grav\Common\Utils;
 use Grav\Common\Page\Page;
 use Grav\Common\Page\Pages;
 use Grav\Common\Page\Media;
+use Grav\Common\Helpers\Excerpts;
 
 /**
  * Source API
@@ -37,10 +38,10 @@ class Source
      * @param Page  $page  Page-instance
      * @param Pages $pages Pages-instance
      */
-    public function __construct(Page $page, Pages $pages)
+    public function __construct(Page $Page, Pages $Pages)
     {
-        $this->page = $page;
-        $this->pages = $pages;
+        $this->Page = $Page;
+        $this->Pages = $Pages;
     }
 
     /**
@@ -48,10 +49,11 @@ class Source
      *
      * @param string $source Image src-attribute
      * @param string $prefix Optional prefix to Page location
+     * @param string $mediaActions Optional media actions on the image (resize, etc)
      *
      * @return array Image source, filename, and optionally Page
      */
-    public function render(string $source, string $prefix = '')
+    public function render(string $source, string $prefix = '', string $mediaActions = null)
     {
         if (filter_var($source, FILTER_VALIDATE_URL)) {
             return [
@@ -60,24 +62,36 @@ class Source
             ];
         }
         $source = urldecode($source);
-        $page = $media = $src = null;
+        $Page = $Media = $src = null;
         if (Utils::contains($source, '/')) {
             if (Utils::startsWith($source, '..')) {
-                chdir($this->page->path());
+                chdir($this->Page->path());
                 $folder = str_replace('\\', '/', realpath($source));
-                $page = $this->pages->get(dirname($folder));
+                $Page = $this->Pages->get(dirname($folder));
             } elseif (Utils::startsWith($source, '/')) {
-                $page = $this->pages->find($prefix . dirname($source));
+                $Page = $this->Pages->find($prefix . dirname($source));
             } else {
-                $page = $this->pages->find('/' . dirname($source));
+                $Page = $this->Pages->find('/' . dirname($source));
             }
         } else {
-            $page = $this->page;
+            $Page = $this->Page;
         }
-        if ($page !== null) {
-            $media = new Media($page->path());
-            if ($media->get(basename($source))) {
-                $src = $media->get(basename($source))->url();
+        if ($Page !== null) {
+            $Media = new Media($Page->path());
+            if ($Media->get(basename($source))) {
+                /* WIP: Return string, not Link-object */
+                /* $Medium = $Media->get(basename($source));
+                if ($mediaActions != null) {
+                    $Medium = Excerpts::processMediaActions(
+                        $Medium,
+                        $mediaActions,
+                        $Page
+                    );
+                }
+                $src = $Medium->url();
+                dump($Medium);
+                exit(); */
+                $src = $Media->get(basename($source))->url();
             } else {
                 $src = $source;
             }
@@ -85,7 +99,7 @@ class Source
         return [
             'src' => $src,
             'filename' => basename($source) ?? null,
-            'page' => $page
+            'page' => $Page
         ];
     }
 }

@@ -14,6 +14,10 @@ social:
         icon: 'fa fa-instagram'
         text: Instagram
         url: 'https://instagram.com/leowgweb'
+    -
+        icon: 'fa fa-linkedin'
+        text: Linkedin
+        url: 'https://www.linkedin.com/in/leowgweb/'
 anchors:
     active: true
 tagtitle: h2
