@@ -6,7 +6,7 @@ anchors:
     active: true
 tagtitle: h2
 hero_overlay: true
-hero_showsearch: false
+hero_showsearch: true
 show_sidebar: false
 show_searchsidebar: false
 show_breadcrumbs: true
